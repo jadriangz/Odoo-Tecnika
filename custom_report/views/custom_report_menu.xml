@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Custom Report"
+              parent="sale.menu_sale_report"
+              id="custom_report_wizard_menu"
+              action="custom_report_wizard_action"
+              sequence="1"/>
+</odoo>
