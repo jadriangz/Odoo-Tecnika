@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, _
+from odoo import models, fields
 from odoo.exceptions import UserError
 
 
@@ -11,7 +11,7 @@ class AccountMoveInherit(models.Model):
 
     def custom_partial_reconciled(self, line_id, amount):
         move_line_id = self.env['account.move.line'].browse(line_id)
-        move_line_id.move_id.custom_amount = amount
+        move_line_id.move_id.write({'custom_amount': amount})
         move_line_id.move_id.custom_amount_status = 'changed'
 
 
@@ -166,4 +166,3 @@ class AccountMoveLineInherit(models.Model):
             pass
         else:
             return partials_vals_list
-
