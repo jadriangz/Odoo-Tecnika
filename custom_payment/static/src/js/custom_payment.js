@@ -52,7 +52,6 @@ ReconciliationRenderer.LineRenderer.include({
         });
 
         _.each(props, function (line) {
-                line.custom_line_amount=line.credit
             var $line = $(qweb.render("reconciliation.line.mv_line_edited", {'line': line, 'state': state, 'proposition': true}));
             if (!isNaN(line.id)) {
                 $('<span class="line_info_button fa fa-info-circle"/>')

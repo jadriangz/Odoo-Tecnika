@@ -11,7 +11,7 @@ class AccountMoveInherit(models.Model):
 
     def custom_partial_reconciled(self, line_id, amount):
         move_line_id = self.env['account.move.line'].browse(line_id)
-        move_line_id.move_id.write({'custom_amount': amount})
+        move_line_id.move_id.custom_amount = amount
         move_line_id.move_id.custom_amount_status = 'changed'
 
 
@@ -22,7 +22,6 @@ class AccountMoveLineInherit(models.Model):
         flag = 0
 
         def fix_remaining_cent(currency, abs_residual, partial_amount):
-
             if abs_residual - currency.rounding <= partial_amount <= abs_residual + currency.rounding:
                 return abs_residual
             else:
@@ -141,6 +140,7 @@ class AccountMoveLineInherit(models.Model):
             credit_amount_residual_currency += min_credit_amount_residual_currency
 
             if debit_line.move_id.custom_amount_status == 'changed':
+
                 if debit_line.amount_residual >= debit_line.move_id.custom_amount:
                     partials_vals_list.append({
                         'amount': debit_line.move_id.custom_amount,
@@ -161,7 +161,6 @@ class AccountMoveLineInherit(models.Model):
                     'debit_move_id': debit_line.id,
                     'credit_move_id': credit_line.id,
                 })
-
         if flag == 1:
             pass
         else:

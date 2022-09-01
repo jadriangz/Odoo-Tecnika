@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="custom_report_wizard_view" model="ir.ui.view">
+        <field name="model">custom.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="line_ids">
+                        <tree sample="1" create="0" edit="1" delete="0"
+                              editable="top">
+                            <field name="product_id" string="Product"
+                                   readonly="1"/>
+                            <field name="label" string="Label" readonly="1"/>
+                            <field name="wizard_line_id" string="Label"
+                                   invisible="1"/>
+                            <field name="analytical_account_id"
+                                   string="Analytical Account"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="update_content" string="Update"
+                                type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn btn-default"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="custom_invoice_wizard_action" model="ir.actions.act_window">
+        <field name="name">Invoice Updater</field>
+        <field name="res_model">custom.invoice.wizard</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="custom_report_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
