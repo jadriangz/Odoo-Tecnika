@@ -16,25 +16,18 @@ class CustomInvoiceWizard(models.TransientModel):
                     if inline.analytic_account_id:
                         inline.update(
                             {'analytic_account_id': line.analytical_account_id})
-                        analytical_change_id = self.env[
-                            'account.analytic.line'].search(
-                            [('move_id', '=', line.wizard_line_id.id)])
-                        analytical_change_id.update(
-                            {'account_id': line.analytical_account_id})
-                    else:
-                        if line.analytical_account_id:
-                            self.env['account.analytic.line'].create({
-                                'name': inline.name,
-                                'date': active_id.invoice_date,
-                                'amount': inline.price_subtotal,
-                                'account_id': line.analytical_account_id.id,
-                                'move_id': inline.id,
-                                'product_id': inline.product_id.id,
-
-                            })
-                            inline.update(
-                                {
-                                    'analytic_account_id': line.analytical_account_id})
+                        self.env.cr.execute(""" select account_analytic_line.id 
+                        as account_id from account_move_line join account_analytic_line  
+                        on account_analytic_line.move_id = account_move_line.id
+                        where account_move_line.move_id =%(move_id)s""",
+                        {"move_id": line.wizard_line_id.move_id.id})
+                        analytical_change_ids = self.env.cr.dictfetchall()
+                        for analytical_change_id in analytical_change_ids:
+                            change_id = self.env[
+                                'account.analytic.line'].browse(
+                                analytical_change_id['account_id'])
+                            change_id.update(
+                                {'account_id': line.analytical_account_id})
 
     @api.model
     def default_get(self, fields_list):
