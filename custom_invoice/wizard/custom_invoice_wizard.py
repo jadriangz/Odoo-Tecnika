@@ -13,6 +13,10 @@ class CustomInvoiceWizard(models.TransientModel):
         for line in self.line_ids:
             for inline in active_id.invoice_line_ids:
                 if line.wizard_line_id.id == inline.id:
+                    if inline.account_id:
+                        inline.update(
+                            {'account_id': line.account_id})
+
                     if inline.analytic_account_id:
                         inline.update(
                             {'analytic_account_id': line.analytical_account_id})
@@ -20,7 +24,8 @@ class CustomInvoiceWizard(models.TransientModel):
                         as account_id from account_move_line join account_analytic_line  
                         on account_analytic_line.move_id = account_move_line.id
                         where account_move_line.move_id =%(move_id)s""",
-                        {"move_id": line.wizard_line_id.move_id.id})
+                                            {
+                                                "move_id": line.wizard_line_id.move_id.id})
                         analytical_change_ids = self.env.cr.dictfetchall()
                         for analytical_change_id in analytical_change_ids:
                             change_id = self.env[
@@ -42,6 +47,7 @@ class CustomInvoiceWizard(models.TransientModel):
                     (0, 0, {'wizard_line_id': inline.id,
                             'product_id': inline.product_id,
                             'label': inline.name,
+                            'account_id': inline.account_id.id,
                             'analytical_account_id': inline.analytic_account_id}))
             res['line_ids'] = lst
         return res
@@ -52,5 +58,7 @@ class CustomInvoiceLIneWizard(models.TransientModel):
     wizard_id = fields.Many2one('custom.invoice.wizard')
     label = fields.Char()
     wizard_line_id = fields.Many2one('account.move.line')
+    account_id = fields.Many2one('account.account',
+       domain="['|',('code', '=', '401.01.001'),('code', '=', '401.01.002')]")
     product_id = fields.Many2one('product.product')
     analytical_account_id = fields.Many2one('account.analytic.account')

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models
+from odoo import models,fields
 
 
 class AccountMoveInherit(models.Model):
@@ -14,3 +14,4 @@ class AccountMoveInherit(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
         }
+

@@ -13,6 +13,8 @@
                             <field name="label" string="Label" readonly="1"/>
                             <field name="wizard_line_id" string="Label"
                                    invisible="1"/>
+                            <field name="account_id"
+                                   string="Account"/>
                             <field name="analytical_account_id"
                                    string="Analytical Account"/>
                         </tree>
