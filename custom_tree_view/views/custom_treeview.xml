@@ -9,8 +9,9 @@
         <field name="arch" type="xml">
             <xpath expr="//tree/field[@name='amount_untaxed_signed']"
                    position="before">
-                <field name="cost"/>
-                <field name="margin"/>
+                <field name="cost" optional="hide"/>
+                <field name="margin" optional="hide"/>
+                <field name="margin_percentage" optional="hide" string="Margin.%"  widget="product_discount"/>
             </xpath>
         </field>
     </record>
