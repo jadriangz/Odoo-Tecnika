@@ -28,6 +28,7 @@
     'depends': ['base', 'account_accountant','l10n_mx_edi'],
     'website': 'https://www.cybrosys.com',
     'data': ['views/custom_payment_policy.xml'],
+    'post_init_hook': '_post_init_payment_policy',
     'license': 'LGPL-3',
     'author': 'Cybrosys',
 }
